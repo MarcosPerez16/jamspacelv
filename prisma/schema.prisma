@@ -4,6 +4,9 @@
 // Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
+//db push command pushes changes directly with no migration file which gives no history
+//migrate dev pushes with records showing exactly what changed. using migration in this project
+
 generator client {
   provider = "prisma-client"
   output   = "../app/generated/prisma"
@@ -38,6 +41,10 @@ model Instruments {
   name      String
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id])
+
+  //prevents duplicate instrment names per profile 
+  //called a compostie unique constraint
+  @@unique([profileId, name])
 }
 
 model Genres {
@@ -45,6 +52,8 @@ model Genres {
   name      String
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id])
+
+  @@unique([profileId, name])
 }
 
 model Tunings {
@@ -52,6 +61,8 @@ model Tunings {
   name      String
   profileId String
   profile   Profile @relation(fields: [profileId], references: [id])
+
+  @@unique([profileId, name])
 }
 
 //next auth specific models
